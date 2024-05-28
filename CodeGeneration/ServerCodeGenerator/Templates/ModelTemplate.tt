@@ -1,0 +1,73 @@
+﻿<#@ template visibility="internal" #>
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using Common.Enums;
+using Entities;
+
+namespace UI.Areas.Admin.Models
+{
+	public class <#= EntityDescription.Name #>Model
+	{
+<# 
+var constructorParams = "";
+var usedNamespaces = new[] { "Common.Enums" };
+foreach (var propertyDescription in EntityDescription.Properties)
+{
+	if (constructorParams != "")
+		constructorParams += ", ";
+	constructorParams += "obj." + propertyDescription.EntityName;
+#>
+<# if (propertyDescription.IsRequired)
+{
+#>
+		[Required(ErrorMessage = "Укажите значение")]
+<#
+}
+#>
+		[Display(Name = "<#= propertyDescription.EntityName #>")]
+		public <#= propertyDescription.EntityType.GetFriendlyCSharpName(usedNamespaces) #> <#= propertyDescription.EntityName #> { get; set; }
+
+<#
+}
+#>
+		public static <#= EntityDescription.Name #>Model FromEntity(<#= EntityDescription.Name #> obj)
+		{
+			return obj == null ? null : new <#= EntityDescription.Name #>Model
+			{
+<# 
+foreach (var propertyDescription in EntityDescription.Properties)
+{
+#>
+				<#= propertyDescription.EntityName #> = obj.<#= propertyDescription.EntityName #>,
+<#
+}
+#>
+			};
+		}
+
+		public static <#= EntityDescription.Name #> ToEntity(<#= EntityDescription.Name #>Model obj)
+		{
+<#= $"return obj == null ? null : new {EntityDescription.Name}({constructorParams});".SplitToLines(3, MaxLineWidth, new string[] { ", " }) #>
+		}
+
+		public static List<<#= EntityDescription.Name #>Model> FromEntitiesList(IEnumerable<<#= EntityDescription.Name #>> list)
+		{
+			return list?.Select(FromEntity).ToList();
+		}
+
+		public static List<<#= EntityDescription.Name #>> ToEntitiesList(IEnumerable<<#= EntityDescription.Name #>Model> list)
+		{
+			return list?.Select(ToEntity).ToList();
+		}
+	}
+}
+<#+
+	internal EntityDescription EntityDescription;
+	internal int MaxLineWidth;
+	internal ModelTemplate(EntityDescription entityDescription, int maxLineWidth) {
+		EntityDescription = entityDescription;
+		MaxLineWidth = maxLineWidth;
+	}
+#>

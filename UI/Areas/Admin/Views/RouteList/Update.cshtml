@@ -1,0 +1,53 @@
+﻿@model RouteListModel
+
+@{
+	var exists = Model != null && Model.Id != 0;
+	ViewBag.Title = (exists ? "Редактирование" : "Создание") + " RouteList";
+}
+
+<form asp-action="Update" asp-antiforgery="true" method="post">
+	<div class="row">
+		<input type="hidden" asp-for="Id"/>
+		<div class="col-md-4 col-sm-6">
+			<div class="form-group">
+				<label asp-for="RouteDate"></label>
+				<input type="text" asp-for="RouteDate" class="form-control dateTimePicker"/>
+				<span asp-validation-for="RouteDate" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="col-md-4 col-sm-6">
+			<div class="form-group">
+				<label asp-for="IdBus"></label>
+				<input type="text" asp-for="IdBus" class="form-control"/>
+				<span asp-validation-for="IdBus" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="col-md-4 col-sm-6">
+			<div class="form-group">
+				<label asp-for="IdDriver"></label>
+				<input type="text" asp-for="IdDriver" class="form-control"/>
+				<span asp-validation-for="IdDriver" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="col-md-4 col-sm-6">
+			<div class="form-group">
+				<label asp-for="IdConductor"></label>
+				<input type="text" asp-for="IdConductor" class="form-control"/>
+				<span asp-validation-for="IdConductor" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="col-md-4 col-sm-6">
+			<div class="form-group">
+				<label asp-for="IdRoute"></label>
+				<input type="text" asp-for="IdRoute" class="form-control"/>
+				<span asp-validation-for="IdRoute" class="text-danger"></span>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<button class="btn btn-outline-primary" type="submit">@(exists ? "Сохранить" : "Добавить")</button>
+			<a asp-action="Index" class="btn btn-outline-secondary">Отмена</a>
+		</div>
+	</div>
+</form>

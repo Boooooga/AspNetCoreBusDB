@@ -1,0 +1,126 @@
+{
+  "version": "1.0",
+  "defaultProvider": "jsdelivr",
+	"libraries": [
+		{
+			"library": "jquery@3.4.1",
+			"destination": "wwwroot/lib/jquery/",
+			"files": [
+				"dist/jquery.min.js",
+				"dist/jquery.min.map"
+			]
+		},
+		{
+			"library": "tinymce@5.1.1",
+			"destination": "wwwroot/lib/tinymce/"
+		},
+		{
+			"library": "bootstrap@4.3.1",
+			"destination": "wwwroot/lib/bootstrap/",
+			"files": [
+				"dist/css/bootstrap-grid.css",
+				"dist/css/bootstrap-grid.css.map",
+				"dist/css/bootstrap-grid.min.css",
+				"dist/css/bootstrap-grid.min.css.map",
+				"dist/css/bootstrap-reboot.css",
+				"dist/css/bootstrap-reboot.css.map",
+				"dist/css/bootstrap-reboot.min.css",
+				"dist/css/bootstrap-reboot.min.css.map",
+				"dist/css/bootstrap.css",
+				"dist/css/bootstrap.css.map",
+				"dist/css/bootstrap.min.css",
+				"dist/css/bootstrap.min.css.map",
+				"dist/js/bootstrap.bundle.js",
+				"dist/js/bootstrap.bundle.js.map",
+				"dist/js/bootstrap.bundle.min.js",
+				"dist/js/bootstrap.bundle.min.js.map",
+				"dist/js/bootstrap.js",
+				"dist/js/bootstrap.js.map",
+				"dist/js/bootstrap.min.js",
+				"dist/js/bootstrap.min.js.map"
+			]
+		},
+		{
+			"library": "jquery-validation@1.19.1",
+			"destination": "wwwroot/lib/jquery-validation/"
+		},
+		{
+			"library": "jquery-validation-unobtrusive@3.2.11",
+			"destination": "wwwroot/lib/jquery-validation-unobtrusive/",
+			"files": [
+				"dist/jquery.validate.unobtrusive.min.js"
+			]
+		},
+		{
+			"library": "jquery-ajax-unobtrusive@3.2.6",
+			"destination": "wwwroot/lib/jquery-ajax-unobtrusive/",
+			"files": [
+				"dist/jquery.unobtrusive-ajax.min.js"
+			]
+		},
+		{
+			"library": "jquery-datetimepicker@2.5.21",
+			"destination": "wwwroot/lib/jquery-datetimepicker/",
+			"files": [
+				"build/jquery.datetimepicker.full.js",
+				"build/jquery.datetimepicker.full.min.js",
+				"build/jquery.datetimepicker.min.css",
+				"build/jquery.datetimepicker.min.js"
+			]
+		},
+		{
+			"library": "knockout@3.5.1",
+			"destination": "wwwroot/lib/knockout/",
+			"files": [
+				"build/output/knockout-latest.debug.js",
+				"build/output/knockout-latest.debug.min.js",
+				"build/output/knockout-latest.js",
+				"build/output/knockout-latest.min.js",
+				"build/types/knockout.d.ts"
+			]
+		},
+		{
+			"provider": "cdnjs",
+			"library": "font-awesome@5.11.2",
+			"destination": "wwwroot/lib/font-awesome/",
+			"files": [
+				"css/all.min.css",
+				"webfonts/fa-brands-400.eot",
+				"webfonts/fa-brands-400.svg",
+				"webfonts/fa-brands-400.ttf",
+				"webfonts/fa-brands-400.woff",
+				"webfonts/fa-brands-400.woff2",
+				"webfonts/fa-regular-400.eot",
+				"webfonts/fa-regular-400.svg",
+				"webfonts/fa-regular-400.ttf",
+				"webfonts/fa-regular-400.woff",
+				"webfonts/fa-regular-400.woff2",
+				"webfonts/fa-solid-900.eot",
+				"webfonts/fa-solid-900.svg",
+				"webfonts/fa-solid-900.ttf",
+				"webfonts/fa-solid-900.woff",
+				"webfonts/fa-solid-900.woff2",
+				"js/all.min.js"
+			]
+		},
+		{
+			"library": "jquery-contextmenu@2.9.0",
+			"destination": "wwwroot/lib/jquery-contextmenu/",
+			"files": [
+				"dist/jquery.ui.position.min.js",
+				"dist/jquery.contextMenu.min.js",
+				"dist/jquery.contextMenu.min.css"
+			]
+		},
+		{
+			"provider": "cdnjs",
+			"library": "knockout.mapping@2.4.1",
+			"destination": "wwwroot/lib/knockout.mapping/"
+		},
+		{
+			"provider": "cdnjs",
+			"library": "dropzone@5.5.1",
+			"destination": "wwwroot/lib/dropzone/"
+		}
+	]
+}

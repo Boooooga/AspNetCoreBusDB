@@ -1,0 +1,19 @@
+﻿@model UsersFilterModel
+
+<form asp-action="Index" asp-antiforgery="true" method="post">
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<label asp-for="SearchQuery"></label>
+				<input type="text" asp-for="SearchQuery" class="form-control" />
+				<span asp-validation-for="SearchQuery" class="text-danger"></span>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<input type="submit" class="btn btn-outline-primary" value="Применить">
+			<a asp-action="Index" class="btn btn-outline-secondary">Сбросить</a>
+		</div>
+	</div>
+</form>

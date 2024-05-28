@@ -1,0 +1,170 @@
+﻿@using UI.Extensions.Mvc
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="robots" content="noindex">
+	<title>@ViewBag.Title</title>
+	<link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/lib/jquery-datetimepicker/build/jquery.datetimepicker.min.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/admin.min.css" asp-append-version="true" />
+</head>
+<body>
+	<nav class="navbar navbar-dark fixed-top bg-dark navbar-expand-md">
+		<a class="navbar-brand" asp-controller="Home" asp-action="Index">Space App</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<ul class="navbar-nav ml-auto">
+			@if (User.Identity.IsAuthenticated)
+			{
+				<li class="nav-item text-nowrap text-light mr-5 my-auto d-none d-md-block">
+					Вы вошли как:<br /><span class="font-weight-bold">@User.Identity.Name</span>
+				</li>
+				<li class="nav-item text-nowrap my-auto">
+					<a class="nav-link" asp-area="Admin" asp-controller="Users" asp-action="Logout">Выйти</a>
+				</li>
+			}
+			else
+			{
+				<li class="nav-item text-nowrap my-auto">
+					<a class="nav-link" asp-area="Admin" asp-controller="Users" asp-action="Login">Войти</a>
+				</li>
+			}
+		</ul>
+	</nav>
+
+	<div class="container-fluid">
+		<div class="row">
+			<nav class="col-md-2 d-md-block bg-light sidebar collapse" id="sidebar">
+				<div class="sidebar-sticky py-3">
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link @(Url.GetController() == "Home" ? "active" : "")" asp-controller="Home" asp-action="Index">
+								Главная
+							</a>
+						</li>
+						@if (User.Identity.IsAuthenticated)
+						{
+							<li class="nav-item">
+								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Users" asp-action="Index">
+									Пользователи
+								</a>
+							</li>
+                            <li class="nav-item">
+								<a class="nav-link @(Url.GetController() == "ArrivalTime" ? "active" : "")" asp-controller="ArrivalTime" asp-action="Index">
+									Время прибытия
+								</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Url.GetController() == "Buses" ? "active" : "")" asp-controller="Buses" asp-action="Index">
+                                    Автобусы
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Url.GetController() == "BusRoutes_Stops" ? "active" : "")" asp-controller="BusRoutes_Stops" asp-action="Index">
+                                    Маршруты/Остановки
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Url.GetController() == "BusRoutes" ? "active" : "")" asp-controller="BusRoutes" asp-action="Index">
+                                    Маршруты
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Url.GetController() == "Checkups" ? "active" : "")" asp-controller="Checkups" asp-action="Index">
+                                    Техосмотры
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Url.GetController() == "Conductors" ? "active" : "")" asp-controller="Conductors" asp-action="Index">
+                                    Кондукторы
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Url.GetController() == "Drivers" ? "active" : "")" asp-controller="Drivers" asp-action="Index">
+                                    Водители
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Url.GetController() == "Mechanics" ? "active" : "")" asp-controller="Mechanics" asp-action="Index">
+                                    Механики
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Url.GetController() == "RouteList" ? "active" : "")" asp-controller="RouteList" asp-action="Index">
+                                    Путевые листы
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Url.GetController() == "Stops" ? "active" : "")" asp-controller="Stops" asp-action="Index">
+                                    Остановки
+                                </a>
+                            </li>
+						}
+					</ul>
+				</div>
+			</nav>
+
+			<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+				<div class="py-3">
+					<div class="row mb-3">
+						<h2 class="text-center col-12">@ViewBag.Title</h2>
+					</div>
+					<partial name="_OperationResult" />
+					@RenderBody()
+				</div>
+			</main>
+		</div>
+	</div>
+
+	@if (ViewBag.UseFileManager == true)
+	{
+		<div class="modal fade" id="fileManagerModal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Выбор файла</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body p-0">
+						<div class="embed-responsive embed-responsive-16by9">
+							<iframe class="embed-responsive-item" src="@Url.Action("Index", "FileManager", new {id = "popupFileManager"})"></iframe>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>
+						<button type="button" class="btn btn-secondary" onclick="pageUtils.getSelectedFile()">Выбрать</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+
+	<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+	<script src="~/js/pageUtils.js" asp-append-version="true"></script>
+	<script>
+		pageUtils.setAppRootPath("@Url.Content("~")");
+		@if (ViewBag.UseFileManager == true)
+		{
+			<text>
+				pageUtils.setupPopupFileManager();
+			</text>
+		}
+	</script>
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
+	<script src="~/lib/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js" asp-append-version="true"></script>
+	<script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js" asp-append-version="true"></script>
+	<script src="~/lib/tinymce/tinymce.min.js" asp-append-version="true"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+	<script src="~/lib/knockout/build/output/knockout-latest.min.js" asp-append-version="true"></script>
+	<script src="~/lib/knockout.mapping/knockout.mapping.min.js" asp-append-version="true"></script>
+	<script src="~/js/admin.js" asp-append-version="true"></script>
+	@RenderSection("Scripts", required: false)
+</body>
+</html>

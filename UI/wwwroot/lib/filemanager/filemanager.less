@@ -1,0 +1,75 @@
+﻿.file-manager {
+	.directories-list {
+
+		.directory-item {
+			user-select: none;
+
+			> .directory-title {
+			}
+
+			> ul.subdirectories {
+				list-style: none;
+				padding-left: 20px;
+
+				> li {
+				}
+			}
+		}
+	}
+
+	.files-list {
+		.file-item {
+			user-select: none;
+		}
+	}
+
+	.context-menu-item {
+		&.context-menu-icon.context-menu-icon--fa5 {
+			i, svg {
+				top: 50%;
+				-ms-transform: translateY(-50%);
+				transform: translateY(-50%);
+				color: #6c757d;
+			}
+		}
+
+		&.context-menu-hover {
+			background-color: #5e5e5e;
+			color: #f8f9fa;
+
+			&.context-menu-icon.context-menu-icon--fa5 {
+				i, svg {
+					color: #f8f9fa;
+				}
+			}
+		}
+	}
+
+	#uploadFileModal {
+		.dropzone {
+			padding: 0;
+			border: none;
+			min-height: unset;
+
+			.upload-file-item {
+				.remove-file-button {
+					cursor: pointer;
+
+					* {
+						cursor: inherit;
+					}
+				}
+
+				&.dz-error {
+					.progress {
+						display: none;
+					}
+				}
+			}
+		}
+	}
+
+	#fileItemTemplate {
+		display: none;
+	}
+}

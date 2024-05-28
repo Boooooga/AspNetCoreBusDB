@@ -1,0 +1,62 @@
+﻿@using UI.Extensions.Mvc
+@model UserModel
+
+@{
+	var exists = Model != null && Model.Id != 0;
+	ViewBag.Title = (exists ? "Редактирование" : "Создание") + " пользователя";
+	var roles = typeof(UserRole).GetEnumValues().Cast<UserRole>();
+	if (!User.IsInRole(nameof(UserRole.Developer)))
+	{
+		roles = roles.Where(role => role != UserRole.Developer);
+	}
+}
+
+<form asp-controller="@Url.GetController()" asp-action="Update" asp-antiforgery="true" method="post">
+	<div class="row">
+		<input type="hidden" asp-for="Id" />
+		<div class="col-md-4 col-sm-6">
+			<div class="form-group">
+				<label asp-for="Login"></label>
+				<input type="text" asp-for="Login" class="form-control" />
+				<span asp-validation-for="Login" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="col-md-4 col-sm-6">
+			<div class="form-group">
+				<label asp-for="Password"></label>
+				<input type="text" asp-for="Password" class="form-control" />
+				<span asp-validation-for="Password" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="col-md-4 col-sm-6">
+			<div class="form-group">
+				<label asp-for="Role"></label>
+				<select asp-for="Role" asp-items="@(Html.GetEnumSelectList(roles))" class="form-control"></select>
+				<span asp-validation-for="Role" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="col-md-4 col-sm-6">
+			<div class="form-group">
+				<label asp-for="IsBlocked"></label>
+				<input type="checkbox" asp-for="IsBlocked" class="form-control" />
+				<span asp-validation-for="IsBlocked" class="text-danger"></span>
+			</div>
+		</div>
+		@if (exists)
+		{
+			<div class="col-md-4 col-sm-6">
+				<div class="form-group">
+					<label asp-for="RegistrationDate"></label>
+					<p class="form-control-plaintext">@Model.RegistrationDate</p>
+				</div>
+			</div>
+		}
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<button class="btn btn-outline-primary" type="submit">@(exists ? "Сохранить" : "Добавить")</button>
+			<a asp-controller="@Url.GetController()" asp-action="Index" class="btn btn-outline-secondary">Отмена</a>
+			
+		</div>
+	</div>
+</form>

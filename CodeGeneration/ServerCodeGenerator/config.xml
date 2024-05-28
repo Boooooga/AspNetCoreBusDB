@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<generationSettings solutionFolderPath="..\..\..\..\..\" existingFilesProcessMode="Overwrite" maxLineWidth="120"/>
+	<entities>
+		<!--<entity name="Client">
+			<properties>
+				<property dbName="RegistrationStatusId" entityName="RegistrationStatus" entityType="Common.Enums.ClientRegistrationStatus, Common"/>
+			</properties>
+		</entity>
+		<entity name="Seller">
+			<properties>
+				<property dbName="ActivityTypeId" entityName="ActivityType" entityType="Common.Enums.SellerActivityType, Common"/>
+			</properties>
+		</entity>
+		<entity name="IdentityCheck">
+			<properties>
+				<property dbName="ActionTypeId" entityName="ActionType" entityType="Common.Enums.IdentityCheckActionType, Common"/>
+				<property dbName="StatusId" entityName="Status" entityType="Common.Enums.IdentityCheckStatus, Common"/>
+			</properties>
+			<files>
+				<file type="Model">False</file>
+				<file type="Controller">False</file>
+				<file type="ViewIndex">False</file>
+				<file type="ViewUpdate">False</file>
+			</files>
+		</entity>
+		<entity name="Vehicle"/>
+		<entity name="Purchase">
+			<properties>
+				<property dbName="PaymentStatusId" entityName="PaymentStatus" entityType="Common.Enums.PurchasePaymentStatus, Common"/>
+			</properties>
+		</entity>-->
+		<entity name="ArrivalTime"/>
+		<entity name="Bus"/>
+		<entity name="BusRoute"/>
+		<entity name="BusRoutesStop"/>
+		<entity name="Checkup"/>
+		<entity name="Conductor"/>
+		<entity name="Driver"/>
+		<entity name="Mechanic"/>
+		<entity name="RouteList"/>
+		<entity name="Stop"/>
+	</entities>
+</configuration>

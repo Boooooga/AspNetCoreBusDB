@@ -1,0 +1,55 @@
+﻿<#@ template visibility="internal" #>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Dal;
+using Common.Enums;
+using Common.Search;
+using <#= EntityDescription.Name #> = Entities.<#= EntityDescription.Name #>;
+
+namespace BL
+{
+	public class <#= EntityDescription.PluralName #>BL
+	{
+		public async Task<int> AddOrUpdateAsync(<#= EntityDescription.Name #> entity)
+		{
+			entity.Id = await new <#= EntityDescription.PluralName #>Dal().AddOrUpdateAsync(entity);
+			return entity.Id;
+		}
+
+		public Task<bool> ExistsAsync(int id)
+		{
+			return new <#= EntityDescription.PluralName #>Dal().ExistsAsync(id);
+		}
+
+		public Task<bool> ExistsAsync(<#= EntityDescription.PluralName #>SearchParams searchParams)
+		{
+			return new <#= EntityDescription.PluralName #>Dal().ExistsAsync(searchParams);
+		}
+
+		public Task<<#= EntityDescription.Name #>> GetAsync(int id)
+		{
+			return new <#= EntityDescription.PluralName #>Dal().GetAsync(id);
+		}
+
+		public Task<bool> DeleteAsync(int id)
+		{
+			return new <#= EntityDescription.PluralName #>Dal().DeleteAsync(id);
+		}
+
+		public Task<SearchResult<<#= EntityDescription.Name #>>> GetAsync(<#= EntityDescription.PluralName #>SearchParams searchParams)
+		{
+			return new <#= EntityDescription.PluralName #>Dal().GetAsync(searchParams);
+		}
+	}
+}
+
+<#+
+	internal EntityDescription EntityDescription;
+	internal int MaxLineWidth;
+	internal BLTemplate(EntityDescription entityDescription, int maxLineWidth) {
+		EntityDescription = entityDescription;
+		MaxLineWidth = maxLineWidth;
+	}
+#>

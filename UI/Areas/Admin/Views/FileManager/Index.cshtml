@@ -1,0 +1,291 @@
+﻿@using System.Text.RegularExpressions
+@using Microsoft.Extensions.Options
+@using UI.Areas.Admin.Models.FileManager
+@model FileManagerViewModel
+@inject IOptions<FileManagerOptions> Options
+
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<title>Файловый менеджер</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/lib/jquery-contextmenu/dist/jquery.contextMenu.min.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/lib/dropzone/min/dropzone.min.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/lib/filemanager/filemanager.min.css" asp-append-version="true" />
+	<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+	<script src="~/lib/knockout/build/output/knockout-latest.min.js" asp-append-version="true"></script>
+	<script src="~/lib/jquery-contextmenu/dist/jquery.ui.position.min.js" asp-append-version="true"></script>
+	<script src="~/lib/jquery-contextmenu/dist/jquery.contextMenu.min.js" asp-append-version="true"></script>
+	<script src="~/lib/dropzone/min/dropzone.min.js" asp-append-version="true"></script>
+	<script src="~/lib/filemanager/filemanager.js" asp-append-version="true"></script>
+</head>
+<body class="file-manager">
+	<div class="container-fluid vh-100">
+		<div class="row h-100">
+			<div class="col-md-12 h-100 py-3">
+				<div class="card h-100">
+					<div class="card-header">
+						<button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#createDirectoryModal">
+							<i class="fas fa-folder-open"></i> Создать папку
+						</button>
+						<button type="button" class="btn btn-outline-secondary ml-2" data-toggle="modal" data-target="#uploadFileModal">
+							<i class="fas fa-file-upload"></i> Загрузить файл
+						</button>
+					</div>
+					<div class="card-body py-0 h-100 overflow-hidden">
+						<div class="row h-100">
+							<div class="col-md-3 h-100 border-right overflow-auto">
+								<div class="directories-list py-2" data-bind="template: { name: 'directoryItemTemplate', data: '/' }">
+								</div>
+							</div>
+							<div class="col-md-9 h-100 overflow-auto">
+								<div class="files-list">
+									<table class="table">
+										<thead>
+											<tr>
+												<th scope="col" class="w-50">Имя</th>
+												<th scope="col" class="w-25">Изменен</th>
+												<th scope="col" class="w-25">Размер</th>
+											</tr>
+										</thead>
+										<tbody data-bind="foreach: files">
+											<tr class="file-item" data-bind="click: $root.setCurrentFile, class: $data.relativeUrl() == $root.currentFile() ? ' text-light bg-dark' : ''">
+												<td data-bind="text: name"></td>
+												<td data-bind="text: formattedModifiedTime"></td>
+												<td data-bind="text: formattedSize"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="createDirectoryModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Создание папки</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" data-bind="disable: isOperationRunning">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Укажите имя папки</label>
+								<input type="text" class="form-control" data-bind="value: newDirectoryName, disable: isOperationRunning" />
+								<div class="text-danger mt-2" data-bind="text: currentError"></div>
+								<div class="spinner-border text-dark" role="status" data-bind="visible: isOperationRunning">
+									<span class="sr-only">Обработка запроса...</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-secondary" data-bind="disable: isOperationRunning" data-dismiss="modal">Отмена</button>
+					<button type="button" class="btn btn-secondary" data-bind="click: createDirectory, disable: isOperationRunning">Создать</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="deleteDirectoryModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Удаление папки</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div>
+						Вы уверены, что хотите удалить папку <span data-bind="text: getDirectoryName(selectedDirectoryPath())"></span>?
+					</div>
+					<div class="text-danger mt-2" data-bind="text: currentError"></div>
+					<div class="spinner-border text-dark" role="status" data-bind="visible: isOperationRunning">
+						<span class="sr-only">Обработка запроса...</span>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-secondary" data-bind="disable: isOperationRunning" data-dismiss="modal">Отмена</button>
+					<button type="button" class="btn btn-danger" data-bind="click: deleteDirectory, disable: isOperationRunning">Удалить</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="renameDirectoryModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Переименование папки</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" data-bind="disable: isOperationRunning">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Укажите новое имя для папки <span data-bind="text: getDirectoryName(selectedDirectoryPath())"></span></label>
+								<input type="text" class="form-control" data-bind="value: newDirectoryName, disable: isOperationRunning" />
+								<div class="text-danger mt-2" data-bind="text: currentError"></div>
+								<div class="spinner-border text-dark" role="status" data-bind="visible: isOperationRunning">
+									<span class="sr-only">Обработка запроса...</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-secondary" data-bind="disable: isOperationRunning" data-dismiss="modal">Отмена</button>
+					<button type="button" class="btn btn-secondary" data-bind="click: renameDirectory, disable: isOperationRunning">Переименовать</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="deleteFileModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Удаление файла</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div>
+						Вы уверены, что хотите удалить файл <span data-bind="text: getFileName(selectedFilePath())"></span>?
+					</div>
+					<div class="text-danger mt-2" data-bind="text: currentError"></div>
+					<div class="spinner-border text-dark" role="status" data-bind="visible: isOperationRunning">
+						<span class="sr-only">Обработка запроса...</span>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-secondary" data-bind="disable: isOperationRunning" data-dismiss="modal">Отмена</button>
+					<button type="button" class="btn btn-danger" data-bind="click: deleteFile, disable: isOperationRunning">Удалить</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="renameFileModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Переименование файла</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" data-bind="disable: isOperationRunning">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Укажите новое имя для файла <span data-bind="text: getFileName(selectedFilePath())"></span></label>
+								<input type="text" class="form-control" data-bind="value: newFileName, disable: isOperationRunning" />
+								<div class="text-danger mt-2" data-bind="text: currentError"></div>
+								<div class="spinner-border text-dark" role="status" data-bind="visible: isOperationRunning">
+									<span class="sr-only">Обработка запроса...</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-secondary" data-bind="disable: isOperationRunning" data-dismiss="modal">Отмена</button>
+					<button type="button" class="btn btn-secondary" data-bind="click: renameFile, disable: isOperationRunning">Переименовать</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="uploadFileModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Загрузка файлов</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" data-bind="disable: isOperationRunning" >
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form class="dropzone upload-files-list list-group" id="filesUploadForm">
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-secondary" data-dismiss="modal"  data-bind="disable: isOperationRunning" >Закрыть</button>
+					<button type="button" class="btn btn-secondary upload-button">Добавить файл</button>
+				</div>
+			</div>
+		</div>
+	</div>
+<div id="fileItemTemplate">
+	<div class="upload-file-item list-group-item">
+		<div class="row">
+			<div class="col-md-9">
+				<div data-dz-name class="text-break"></div>
+			</div>
+			<div class="col-md-3">
+				<div data-dz-size class="text-right"></div>
+			</div>
+			@*<div class="col-md-2 text-right align-items-center">
+				<a class="remove-file-button" data-dz-remove>
+					<i class="fas fa-trash"></i>
+				</a>
+			</div>*@
+			<div class="col-md-12">
+				<div class="progress mt-2">
+					<div class="progress-bar progress-bar-striped bg-dark" role="progressbar" data-dz-uploadprogress style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+				</div>
+			</div>
+			<div class="col-md-12 mt-2 text-danger" data-dz-errormessage></div>
+		</div>
+	</div>
+</div>
+	<script id="directoryItemTemplate" type="text/html">
+		<div class="directory-item" data-bind="let: { directoryDescriptor: $root.getDirectoryDescriptor($data) }, class: $data === '/' ? 'root' : ''">
+			<div class="directory-title p-1" data-bind="click: $root.setCurrentDirectory, class: $data == $root.currentDirectory() ? ' text-light bg-dark' : ''">
+				<i class="fas" data-bind="click: directoryDescriptor.toggleExpandedState, clickBubble: directoryDescriptor.children().length == 0, class: directoryDescriptor.children().length == 0 ? 'fa-folder' : (directoryDescriptor.isExpanded() ? 'fa-folder-minus' : 'fa-folder-plus')"></i>
+				<span class="ml-1" data-bind="text: $root.getDirectoryName($data)"></span>
+			</div>
+			<ul class="subdirectories" data-bind="foreach: directoryDescriptor.children, visible: directoryDescriptor.isExpanded">
+				<li data-bind="template: { name: 'directoryItemTemplate', data: ($parent === '/' ? '' : $parent) + '/' + $data }"></li>
+			</ul>
+		</div>
+	</script>
+	<script>
+		$(document).ready(function() {
+			var manager = new FileManager({
+				baseSiteUrl: '@Url.Content("~")',
+				uploadsDirectoryPath: '@Options.Value.RootDirectoryRelativePath',
+				baseManagerUrl: '@Regex.Replace(Url.Action("Index", new FileManagerViewModel()), @"\?.*", "")',
+				environment: '@Model.Environment.ToString()',
+				id: '@Model.Id'
+			});
+			window.addEventListener('message', function (event) {
+				if (event.origin !== document.location.origin) {
+					return;
+				}
+				var data = event.data;
+				console.log('message received:', data);
+				if (data === 'returnFile') {
+					manager.returnCurrentFile();
+				}
+			});
+			ko.applyBindings(manager);
+			manager.loadDirectories();
+		});
+	</script>
+</body>
+</html>

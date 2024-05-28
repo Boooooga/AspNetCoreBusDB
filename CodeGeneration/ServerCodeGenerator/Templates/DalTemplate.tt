@@ -1,0 +1,107 @@
+﻿<#@ template visibility="internal" #>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Common.Enums;
+using Common.Search;
+using Dal.DbModels;
+
+namespace Dal
+{
+	public class <#= EntityDescription.PluralName #>Dal : BaseDal<DefaultDbContext, <#= EntityDescription.Name #>, Entities.<#= EntityDescription.Name #>, int, <#= EntityDescription.PluralName #>SearchParams, object>
+	{
+		protected override bool RequiresUpdatesAfterObjectSaving => false;
+
+		public <#= EntityDescription.PluralName #>Dal()
+		{
+		}
+
+		protected internal <#= EntityDescription.PluralName #>Dal(DefaultDbContext context) : base(context)
+		{
+		}
+
+		protected override Task UpdateBeforeSavingAsync(DefaultDbContext context, Entities.<#= EntityDescription.Name #> entity, <#= EntityDescription.Name #> dbObject, bool exists)
+		{
+<# 
+var usedNamespaces = new[] { "Common.Enums", "System.Collections.Generic" };
+foreach (var propertyDescription in EntityDescription.Properties)
+{
+	if (string.CompareOrdinal(propertyDescription.DbName, "Id") != 0)
+	{
+		if (propertyDescription.RepresentsBitMask())
+		{
+			var nullCondition = propertyDescription.DbType.IsNullable() ? "" : " ?? 0";
+#>
+			dbObject.<#= propertyDescription.DbName #> = entity.<#= propertyDescription.EntityName #>?.Aggregate(0, (currentResult, item) => currentResult | (<#=  propertyDescription.DbType.GetNonNullableType().GetFriendlyCSharpName(usedNamespaces) #>) item)<#= nullCondition #>;
+<#
+		}
+		else
+		{
+			var typeCast = !propertyDescription.EntityType.Equals(propertyDescription.DbType) ? "(" + propertyDescription.DbType.GetFriendlyCSharpName(usedNamespaces) + ")" : "";
+#>
+			dbObject.<#= propertyDescription.DbName #> = <#= typeCast #>entity.<#= propertyDescription.EntityName #>;
+<#
+		}
+	}
+}
+#>
+			return Task.CompletedTask;
+		}
+	
+		protected override Task<IQueryable<<#= EntityDescription.Name #>>> BuildDbQueryAsync(DefaultDbContext context, IQueryable<<#= EntityDescription.Name #>> dbObjects, <#= EntityDescription.PluralName #>SearchParams searchParams)
+		{
+			return Task.FromResult(dbObjects);
+		}
+
+		protected override async Task<IList<Entities.<#= EntityDescription.Name #>>> BuildEntitiesListAsync(DefaultDbContext context, IQueryable<<#= EntityDescription.Name #>> dbObjects, object convertParams, bool isFull)
+		{
+			return (await dbObjects.ToListAsync()).Select(ConvertDbObjectToEntity).ToList();
+		}
+
+		protected override Expression<Func<<#= EntityDescription.Name #>, int>> GetIdByDbObjectExpression()
+		{
+			return item => item.Id;
+		}
+
+		protected override Expression<Func<Entities.<#= EntityDescription.Name #>, int>> GetIdByEntityExpression()
+		{
+			return item => item.Id;
+		}
+
+		internal static Entities.<#= EntityDescription.Name #> ConvertDbObjectToEntity(<#= EntityDescription.Name #> dbObject)
+		{
+<#
+var constructorParams = "";
+foreach (var propertyDescription in EntityDescription.Properties)
+{
+	if (constructorParams != "")
+		constructorParams += ", ";
+	if (propertyDescription.RepresentsBitMask())
+	{
+		var enumTypeFriendlyName = propertyDescription.EntityType.GetGenericArguments()[0].GetFriendlyCSharpName(usedNamespaces);
+		var nonNullableDbTypeFriendlyName = propertyDescription.DbType.GetNonNullableType().GetFriendlyCSharpName(usedNamespaces);
+		var nullCondition = propertyDescription.DbType.IsNullable() ? $"dbObject.{propertyDescription.DbName} == null ? null : " : "";
+		constructorParams += $"{nullCondition}typeof({enumTypeFriendlyName}).GetEnumValues().Cast<{enumTypeFriendlyName}>().Where(item => (dbObject.{propertyDescription.DbName} & ({nonNullableDbTypeFriendlyName})item) == ({nonNullableDbTypeFriendlyName})item).ToList()";
+	}
+	else 
+	{
+		var typeCast = !propertyDescription.EntityType.Equals(propertyDescription.DbType) ? "(" + propertyDescription.EntityType.GetFriendlyCSharpName(usedNamespaces) + ")" : "";
+		constructorParams += typeCast + "dbObject." + propertyDescription.DbName;
+	}
+}
+#>
+<#= $"return dbObject == null ? null : new Entities.{EntityDescription.Name}({constructorParams});".SplitToLines(3, MaxLineWidth, new string[] { ", " }) #>
+		}
+	}
+}
+<#+
+	internal EntityDescription EntityDescription;
+	internal int MaxLineWidth;
+	internal DalTemplate(EntityDescription entityDescription, int maxLineWidth) {
+		EntityDescription = entityDescription;
+		MaxLineWidth = maxLineWidth;
+	}
+#>

@@ -1,0 +1,22 @@
+﻿<#@ template visibility="internal" #>
+using System;
+using System.Collections.Generic;
+using Common.Enums;
+
+namespace Common.Search
+{
+	public class <#= EntityDescription.PluralName #>SearchParams : BaseSearchParams
+	{
+		public <#= EntityDescription.PluralName #>SearchParams(int startIndex = 0, int? objectsCount = null) : base(startIndex, objectsCount)
+		{
+		}
+	}
+}
+<#+
+	internal EntityDescription EntityDescription;
+	internal int MaxLineWidth;
+	internal SearchParamsTemplate(EntityDescription entityDescription, int maxLineWidth) {
+		EntityDescription = entityDescription;
+		MaxLineWidth = maxLineWidth;
+	}
+#>

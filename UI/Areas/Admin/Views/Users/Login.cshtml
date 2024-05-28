@@ -1,0 +1,34 @@
+﻿@using UI.Extensions.Mvc
+@model UI.Areas.Admin.Models.LogOnModel
+
+@{
+	ViewBag.Title = "Вход в систему";
+}
+
+<div class="row">
+	<div class="col-md-4">
+		<form asp-controller="@Url.GetController()" asp-action="Login" asp-antiforgery="true" method="post">
+			<div class="form-group">
+				<label asp-for="Login"></label>
+				<input type="text" asp-for="Login" class="form-control" />
+				<input type="hidden" asp-for="ReturnUrl" />
+				<span asp-validation-for="Login" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Password"></label>
+				<input type="password" asp-for="Password" class="form-control" />
+				<span asp-validation-for="Password" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Remember"></label>
+				<input type="checkbox" asp-for="Remember" class="form-control" />
+				<span asp-validation-for="Remember" class="text-danger"></span>
+			</div>
+			<div class="row">
+				<div class="col-md-6 mx-auto">
+					<button class="btn btn-outline-primary btn-block" type="submit">Войти</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

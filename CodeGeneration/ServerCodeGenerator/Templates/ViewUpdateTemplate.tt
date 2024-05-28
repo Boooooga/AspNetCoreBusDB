@@ -1,0 +1,89 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Enums" #>
+@model <#= EntityDescription.Name #>Model
+
+@{
+	var exists = Model != null && Model.Id != 0;
+	ViewBag.Title = (exists ? "Редактирование" : "Создание") + " <#= EntityDescription.Name #>";
+}
+
+<form asp-action="Update" asp-antiforgery="true" method="post">
+	<div class="row">
+<# 
+foreach (var propertyDescription in EntityDescription.Properties)
+{
+	var displayType = propertyDescription.GetDisplayType();
+	if (displayType == PropertyDisplayType.Hidden)
+	{
+#>
+		<input type="hidden" asp-for="<#= propertyDescription.EntityName #>"/>
+<#
+		continue;
+	}
+#>
+		<div class="col-md-4 col-sm-6">
+			<div class="form-group">
+				<label asp-for="<#= propertyDescription.EntityName #>"></label>
+<#
+	switch (displayType)
+	{
+		case PropertyDisplayType.Bool:
+#>
+				<input type="checkbox" asp-for="<#= propertyDescription.EntityName #>" class="form-control"/>
+<#
+		break;
+		case PropertyDisplayType.NullableBool:
+#>
+				<select asp-for="<#= propertyDescription.EntityName #>" asp-items="@Html.GetNullableBoolSelectList("---НЕ ВЫБРАНО---")" class="form-control"></select>
+<#
+		break;
+		case PropertyDisplayType.Enum:
+#>
+				<select asp-for="<#= propertyDescription.EntityName #>" asp-items="@(Html.GetEnumSelectList<<#= propertyDescription.EntityType.Name #>>())" class="form-control"></select>
+<#
+		break;
+		case PropertyDisplayType.NullableEnum:
+#>
+				<select asp-for="<#= propertyDescription.EntityName #>" asp-items="@(Html.GetNullableEnumSelectList<<#= Nullable.GetUnderlyingType(propertyDescription.EntityType).Name #>>("---НЕ ВЫБРАНО---"))" class="form-control"></select>
+<#
+		break;
+		case PropertyDisplayType.BitMask:
+#>
+				<select asp-for="<#= propertyDescription.EntityName #>" asp-items="@(Html.GetEnumSelectList<<#= propertyDescription.EntityType.GetGenericArguments().First().Name #>>(null))" class="form-control"></select>
+<#
+		break;
+		case PropertyDisplayType.Date:
+#>
+				<input type="text" asp-for="<#= propertyDescription.EntityName #>" class="form-control dateTimePicker"/>
+<#
+		break;
+		default:
+#>
+				<input type="text" asp-for="<#= propertyDescription.EntityName #>" class="form-control"/>
+<#
+		break;
+	}
+#>
+				<span asp-validation-for="<#= propertyDescription.EntityName #>" class="text-danger"></span>
+			</div>
+		</div>
+<#
+}
+#>
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<button class="btn btn-outline-primary" type="submit">@(exists ? "Сохранить" : "Добавить")</button>
+			<a asp-action="Index" class="btn btn-outline-secondary">Отмена</a>
+		</div>
+	</div>
+</form>
+<#+
+	internal EntityDescription EntityDescription;
+	internal int MaxLineWidth;
+	internal ViewUpdateTemplate(EntityDescription entityDescription, int maxLineWidth) {
+		EntityDescription = entityDescription;
+		MaxLineWidth = maxLineWidth;
+	}
+#>

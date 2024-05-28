@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\Mail\MailExtensions.cs" />
+    <Compile Include="Configuration\Mail\SmtpConfiguration.cs" />
+    <Compile Include="Enums\UserRole.cs" />
+    <Compile Include="Enums\EnumExtensions.cs" />
+    <Compile Include="Helpers.cs" />
+    <Compile Include="Search\BaseSearchParams.cs" />
+    <Compile Include="Search\UsersSearchParams.cs" />
+    <Compile Include="Search\SearchResult.cs" />
+    <Compile Include="Configuration\SharedConfiguration.cs" />
+    <Compile Include="Search\ArrivalTimeSearchParams.cs" />
+    <Compile Include="Search\BusesSearchParams.cs" />
+    <Compile Include="Search\BusRoutesSearchParams.cs" />
+    <Compile Include="Search\BusRoutes_StopsSearchParams.cs" />
+    <Compile Include="Search\CheckupsSearchParams.cs" />
+    <Compile Include="Search\ConductorsSearchParams.cs" />
+    <Compile Include="Search\DriversSearchParams.cs" />
+    <Compile Include="Search\MechanicsSearchParams.cs" />
+    <Compile Include="Search\RouteListSearchParams.cs" />
+    <Compile Include="Search\StopsSearchParams.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Troschuetz.Random" Version="5.0.1" />
+  </ItemGroup>
+</Project>

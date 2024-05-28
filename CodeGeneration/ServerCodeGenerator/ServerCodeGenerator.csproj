@@ -1,0 +1,127 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>CodeGeneration.ServerCodeGenerator</RootNamespace>
+	<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+	<EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="CodeGenerator.cs" />
+    <Compile Include="EntityDescription.cs" />
+    <Compile Include="Enums\ExistingFilesProcessMode.cs" />
+    <Compile Include="Enums\GeneratedFiles.cs" />
+    <Compile Include="Enums\PropertyDisplayType.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="MergeUtilities\KDiff3MergeUtility.cs" />
+    <Compile Include="MergeUtilities\MergeUtility.cs" />
+    <Compile Include="MergeUtilities\TortoiseMergeUtility.cs" />
+    <Compile Include="MicrosoftBuildProject.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="PropertyDescription.cs" />
+    <Compile Include="Templates\BLTemplate.cs" />
+    <Compile Include="Templates\ControllerTemplate.cs" />
+    <Compile Include="Templates\DalTemplate.cs" />
+    <Compile Include="Templates\EntityTemplate.cs" />
+    <Compile Include="Templates\ModelTemplate.cs" />
+    <Compile Include="Templates\SearchParamsTemplate.cs" />
+    <Compile Include="Templates\ViewIndexTemplate.cs" />
+    <Compile Include="Templates\ViewUpdateTemplate.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.CodeDom" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Dal\Dal.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="config.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Templates\BLTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>BLTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ControllerTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ControllerTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\DalTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>DalTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\EntityTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>EntityTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ModelTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ModelTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\SearchParamsTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SearchParamsTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ViewIndexTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ViewIndexTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ViewUpdateTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ViewUpdateTemplate.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Templates\BLTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BLTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ControllerTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ControllerTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\DalTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DalTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ModelTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\SearchParamsTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SearchParamsTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ViewIndexTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ViewIndexTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ViewUpdateTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ViewUpdateTemplate.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

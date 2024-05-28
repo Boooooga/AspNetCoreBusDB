@@ -1,0 +1,76 @@
+﻿@using UI.Extensions.Mvc
+@model SearchResultViewModel<UserModel, UsersFilterModel>
+
+@{
+	ViewBag.Title = "Пользователи";
+	var pagedList = Html.PagedList(Model.PagesInfo.ItemsCount, Model.PagesInfo.ItemsPerPage, Model.PagesInfo.CurrentPage,
+		Model.PagesInfo.DisplayedPages, pageNumber => Url.Action(Url.GetAction(), Model.FilterModel.Merge(new
+		{
+			page = pageNumber
+		})), new PagedListExtensions.PagedListRenderParams());
+}
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="card mb-3">
+			<div class="card-body">
+				<a asp-action="Update" class="btn btn-outline-primary">Добавить</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="card mb-3">
+			<div class="card-header" data-toggle="collapse" data-target="#filterBody" aria-expanded="false" aria-controls="filterBody">
+				Параметры поиска
+			</div>
+			<div id="filterBody" class="collapse">
+				<div class="card-body">
+					<partial name="_Filter" for="FilterModel" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		@pagedList
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="table-responsive">
+			<table class="table table-striped">
+				<tr>
+					<th class="text-center">Логин</th>
+					<th class="text-center">Роль</th>
+					<th class="text-center">Действия</th>
+				</tr>
+				@foreach (var item in Model.Objects)
+				{
+					<tr>
+						<td class="text-center">
+							@item.Login
+						</td>
+						<td class="text-center">
+							@item.Role.GetDisplayName()
+						</td>
+						<td class="text-center">
+							<a asp-action="Update" asp-route-id="@item.Id">Изменить</a>
+						</td>
+					</tr>
+				}
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		@pagedList
+	</div>
+</div>

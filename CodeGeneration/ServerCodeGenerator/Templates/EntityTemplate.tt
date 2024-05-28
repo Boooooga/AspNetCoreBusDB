@@ -1,0 +1,45 @@
+﻿<#@ template visibility="internal" #>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Common.Enums;
+
+namespace Entities
+{
+	public class <#= EntityDescription.Name #>
+	{
+<# 
+var usedNamespaces = new[] { "Common.Enums", "System.Collections.Generic" };
+var constructorArguments = "";
+foreach (var propertyDescription in EntityDescription.Properties)
+{
+	if (constructorArguments != "")
+		constructorArguments += ", ";
+	constructorArguments += propertyDescription.EntityType.GetFriendlyCSharpName(usedNamespaces) + " " + propertyDescription.EntityName.ToFirstLower();
+#>
+		public <#= propertyDescription.EntityType.GetFriendlyCSharpName(usedNamespaces) #> <#= propertyDescription.EntityName #> { get; set; }
+<#
+}
+#>
+
+<#= $"public {EntityDescription.Name}({constructorArguments})".SplitToLines(2, MaxLineWidth, new string[] { ", " }) #>
+		{
+<#
+foreach (var propertyDescription in EntityDescription.Properties)
+{
+#>
+			<#= propertyDescription.EntityName #> = <#= propertyDescription.EntityName.ToFirstLower() #>;
+<#
+}
+#>
+		}
+	}
+}
+<#+
+	internal EntityDescription EntityDescription;
+	internal int MaxLineWidth;
+	internal EntityTemplate(EntityDescription entityDescription, int maxLineWidth) {
+		EntityDescription = entityDescription;
+		MaxLineWidth = maxLineWidth;
+	}
+#>

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ServerCodeGenerator": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "MSBuildSDKsPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100"
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+﻿@using Microsoft.AspNetCore.WebUtilities
+@model int
+
+@{
+	ViewBag.Title = $"Ошибка {Model}";
+	Layout = null;
+}
+
+<h1>admin Ошибка @Model</h1>
+
+<p>@ReasonPhrases.GetReasonPhrase(Model)</p>

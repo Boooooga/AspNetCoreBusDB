@@ -1,0 +1,127 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+	<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="ConfirmationCodes\CodeValidationResult.cs" />
+    <Compile Include="ConfirmationCodes\ConfirmationCodesGenerator.cs" />
+    <Compile Include="Finances\ApplePay\ApplePayClient.cs" />
+    <Compile Include="Finances\ApplePay\Models\GetPaymentSessionRequest.cs" />
+    <Compile Include="Finances\ApplePay\Other\FirstLowerContractResolver.cs" />
+    <Compile Include="Finances\Ckassa\Attributes\SignOrderAttribute.cs" />
+    <Compile Include="Finances\Ckassa\CkassaClient.cs" />
+    <Compile Include="Finances\Ckassa\Enums\CardRegistrationFormType.cs" />
+    <Compile Include="Finances\Ckassa\Enums\CardState.cs" />
+    <Compile Include="Finances\Ckassa\Enums\HttpMethod.cs" />
+    <Compile Include="Finances\Ckassa\Enums\OperationResult.cs" />
+    <Compile Include="Finances\Ckassa\Enums\PaymentFormType.cs" />
+    <Compile Include="Finances\Ckassa\Enums\PaymentSource.cs" />
+    <Compile Include="Finances\Ckassa\Enums\PaymentState.cs" />
+    <Compile Include="Finances\Ckassa\Enums\PaymentSystem.cs" />
+    <Compile Include="Finances\Ckassa\Enums\ReceiptSendMethod.cs" />
+    <Compile Include="Finances\Ckassa\Enums\UserState.cs" />
+    <Compile Include="Finances\Ckassa\Models\Card.cs" />
+    <Compile Include="Finances\Ckassa\Models\PaymentDetail.cs" />
+    <Compile Include="Finances\Ckassa\Requests\ConfirmPaymentRequest.cs" />
+    <Compile Include="Finances\Ckassa\Requests\CreateAnonymousPaymentRequest.cs" />
+    <Compile Include="Finances\Ckassa\Requests\CreatePaymentRequest.cs" />
+    <Compile Include="Finances\Ckassa\Requests\DeactivateCardRequest.cs" />
+    <Compile Include="Finances\Ckassa\Requests\GetCardsRequest.cs" />
+    <Compile Include="Finances\Ckassa\Requests\GetPaymentInfoRequest.cs" />
+    <Compile Include="Finances\Ckassa\Requests\GetUserInfoRequest.cs" />
+    <Compile Include="Finances\Ckassa\Requests\RefundPaymentRequest.cs" />
+    <Compile Include="Finances\Ckassa\Requests\RegisterCardRequest.cs" />
+    <Compile Include="Finances\Ckassa\Requests\RegisterUserRequest.cs" />
+    <Compile Include="Finances\Ckassa\Responses\ConfirmPaymentResponse.cs" />
+    <Compile Include="Finances\Ckassa\Responses\CreateAnonymousPaymentResponse.cs" />
+    <Compile Include="Finances\Ckassa\Responses\CreatePaymentError.cs" />
+    <Compile Include="Finances\Ckassa\Responses\CreatePaymentResponse.cs" />
+    <Compile Include="Finances\Ckassa\Responses\DeactivateCardResponse.cs" />
+    <Compile Include="Finances\Ckassa\Responses\Error.cs" />
+    <Compile Include="Finances\Ckassa\Responses\GetCardsResponse.cs" />
+    <Compile Include="Finances\Ckassa\Responses\GetPaymentInfoResponse.cs" />
+    <Compile Include="Finances\Ckassa\Responses\GetUserInfoResponse.cs" />
+    <Compile Include="Finances\Ckassa\Responses\RefundPaymentResponse.cs" />
+    <Compile Include="Finances\Ckassa\Responses\RegisterCardResponse.cs" />
+    <Compile Include="Finances\Ckassa\Responses\RegisterUserResponse.cs" />
+    <Compile Include="Finances\Ckassa\Responses\ResponseWrapper.cs" />
+    <Compile Include="Finances\Sberbank\Enums\Country.cs" />
+    <Compile Include="Finances\Sberbank\Enums\Currency.cs" />
+    <Compile Include="Finances\Sberbank\Enums\Language.cs" />
+    <Compile Include="Finances\Sberbank\Enums\OrderStatus.cs" />
+    <Compile Include="Finances\Sberbank\Enums\RequestSerializationFormat.cs" />
+    <Compile Include="Finances\Sberbank\Enums\TaxSystem.cs" />
+    <Compile Include="Finances\Sberbank\Enums\TaxType.cs" />
+    <Compile Include="Finances\Sberbank\Other\FirstLowerContractResolver.cs" />
+    <Compile Include="Finances\Sberbank\Other\TrimStringConverter.cs" />
+    <Compile Include="Finances\Sberbank\Requests\BaseRequest.cs" />
+    <Compile Include="Finances\Sberbank\Requests\CancelOrderPaymentRequest.cs" />
+    <Compile Include="Finances\Sberbank\Requests\CompleteOrderPaymentRequest.cs" />
+    <Compile Include="Finances\Sberbank\Requests\GetOrderStatusRequest.cs" />
+    <Compile Include="Finances\Sberbank\Requests\MobilePaymentBaseRequest.cs" />
+    <Compile Include="Finances\Sberbank\Requests\Models\CartItem.cs" />
+    <Compile Include="Finances\Sberbank\Requests\Models\CartItemAgentInterest.cs" />
+    <Compile Include="Finances\Sberbank\Requests\Models\CartItemDetails.cs" />
+    <Compile Include="Finances\Sberbank\Requests\Models\CartItemDetailsParameter.cs" />
+    <Compile Include="Finances\Sberbank\Requests\Models\CartItemDiscount.cs" />
+    <Compile Include="Finances\Sberbank\Requests\Models\CartItemQuantity.cs" />
+    <Compile Include="Finances\Sberbank\Requests\Models\CartItems.cs" />
+    <Compile Include="Finances\Sberbank\Requests\Models\CartItemTax.cs" />
+    <Compile Include="Finances\Sberbank\Requests\Models\CustomerDetails.cs" />
+    <Compile Include="Finances\Sberbank\Requests\Models\DeliveryInfo.cs" />
+    <Compile Include="Finances\Sberbank\Requests\Models\OrderBundle.cs" />
+    <Compile Include="Finances\Sberbank\Requests\RegisterApplePayOrderRequest.cs" />
+    <Compile Include="Finances\Sberbank\Requests\RegisterOrderRequest.cs" />
+    <Compile Include="Finances\Sberbank\Responses\BaseResponse.cs" />
+    <Compile Include="Finances\Sberbank\Responses\CancelOrderPaymentResponse.cs" />
+    <Compile Include="Finances\Sberbank\Responses\CompleteOrderPaymentResponse.cs" />
+    <Compile Include="Finances\Sberbank\Responses\DefaultBaseResponse.cs" />
+    <Compile Include="Finances\Sberbank\Responses\GetOrderStatusResponse.cs" />
+    <Compile Include="Finances\Sberbank\Responses\MobilePaymentBaseResponse.cs" />
+    <Compile Include="Finances\Sberbank\Responses\Models\ApplePayOrderInfo.cs" />
+    <Compile Include="Finances\Sberbank\Responses\Models\ErrorInfo.cs" />
+    <Compile Include="Finances\Sberbank\Responses\Models\MobilePaymentData.cs" />
+    <Compile Include="Finances\Sberbank\Responses\RegisterApplePayOrderResponse.cs" />
+    <Compile Include="Finances\Sberbank\Responses\RegisterOrderResponse.cs" />
+    <Compile Include="Finances\Sberbank\SberbankClient.cs" />
+    <Compile Include="Finances\Sberbank\Serializers\DefaultSerializer.cs" />
+    <Compile Include="Finances\Sberbank\Serializers\MobilePaymentSerializer.cs" />
+    <Compile Include="Finances\Sberbank\Serializers\RequestSerializer.cs" />
+    <Compile Include="Misc\AppStore\AppStoreClient.cs" />
+    <Compile Include="Misc\AppStore\Enums\StoreEnvironment.cs" />
+    <Compile Include="Misc\AppStore\Enums\PurchaseCancellationReason.cs" />
+    <Compile Include="Misc\AppStore\Enums\ReceiptStatus.cs" />
+    <Compile Include="Misc\AppStore\Enums\ReceiptType.cs" />
+    <Compile Include="Misc\AppStore\Enums\SubscriptionExpirationReason.cs" />
+    <Compile Include="Misc\AppStore\Requests\VerifyReceiptRequest.cs" />
+    <Compile Include="Misc\AppStore\Responses\InAppPurchase.cs" />
+    <Compile Include="Misc\AppStore\Responses\Receipt.cs" />
+    <Compile Include="Misc\AppStore\Responses\SubscriptionRenewal.cs" />
+    <Compile Include="Misc\AppStore\Responses\VerifyReceiptResponse.cs" />
+    <Compile Include="Serialization\Converters\StringDecimalConverter.cs" />
+    <Compile Include="Serialization\Converters\BooleanConverter.cs" />
+    <Compile Include="Serialization\Converters\UnixDateTimeConverter.cs" />
+    <Compile Include="Misc\SmsRu\Enums\CallCheckStatus.cs" />
+    <Compile Include="Misc\SmsRu\Enums\OperationStatus.cs" />
+    <Compile Include="Misc\SmsRu\Requests\CreateCallCheckRequest.cs" />
+    <Compile Include="Misc\SmsRu\Requests\GetCallCheckStatusRequest.cs" />
+    <Compile Include="Misc\SmsRu\Requests\SendSmsRequest.cs" />
+    <Compile Include="Misc\SmsRu\Responses\BaseResponse.cs" />
+    <Compile Include="Misc\SmsRu\Responses\CreateCallCheckResponse.cs" />
+    <Compile Include="Misc\SmsRu\Responses\GetCallCheckStatusResponse.cs" />
+    <Compile Include="Misc\SmsRu\Responses\SendSmsResponse.cs" />
+    <Compile Include="Misc\SmsRu\SmsRuClient.cs" />
+    <Compile Include="SiteMapGenerator.cs" />
+    <Compile Include="Transliteration.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NLog" Version="5.2.5" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,61 @@
+﻿User-agent: *
+Allow: /css/
+Allow: /js/
+Allow: /plugins/daterangepicker
+Allow: /fonts/
+Allow: *.css
+Allow: *.js
+Disallow: /Admin
+Disallow: /admin
+Disallow: /Users/
+Disallow: /Home/Search*
+Disallow: *?*
+Disallow: /?*
+
+
+User-agent: Yandex
+Allow: /css/
+Allow: /js/
+Allow: /plugins/daterangepicker
+Allow: /fonts/
+Allow: *.css
+Allow: *.js
+Disallow: /Admin
+Disallow: /admin
+Disallow: /Users/
+Disallow: /Home/Search*
+Disallow: *?*
+Disallow: /?*
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_terms&yadclid&yadordid
+Clean-param: flview
+Clean-param: etext	
+
+
+User-agent: Googlebot
+Allow: /css/
+Allow: /js/
+Allow: /plugins/daterangepicker
+Allow: /fonts/
+Allow: *.css
+Allow: *.js
+Disallow: /Admin
+Disallow: /admin
+Disallow: /Users/
+Disallow: /Views/Users/
+Disallow: /Home/Search*
+Disallow: *?*
+Disallow: /?*
+
+User-agent: Googlebot-Image
+Allow: /Uploads/
+Allow: /images/
+Allow: *.png
+Allow: *.jpeg
+Allow: *.jpg
+
+User-agent: YandexImages
+Allow: /Uploads/
+Allow: /images/
+Allow: *.png
+Allow: *.jpeg
+Allow: *.jpg
